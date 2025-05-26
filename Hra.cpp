@@ -576,144 +576,151 @@ int main() {
     cout << "Теперь ты должен выжить в охваченных войной улицах Токио, где каждый день — бой за существование." << endl;
     cout << "Ты направляешься в кафе 'Антэйку', единственное место, где гулям помогают выжить..." << endl;
 
-    while (stage <= 17 && health > 0) {
+    #include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string name;
+    int stage = 1;
+    int health = 20;
+    int mana = 5;
+    int reputation = 0;
+    int humanity = 5;
+    int choice;
+
+    cout << "Введите имя вашего персонажа (Гуль): ";
+    cin >> name;
+
+    while (stage <= 15 && health > 0) {
         cout << "\n=== Этап " << stage << " ===\n";
-
         switch(stage) {
-            case 1: case 6: case 11: case 16: // V
-                cout << "Ты заходишь в 'Антэйку'. Тоука помогает тебе восстановиться." << endl;
-                health = 10;
-                mana = 10;
-                cout << "Здоровье и мана полностью восстановлены." << endl;
+            case 1:
+                cout << "Вы просыпаетесь в катакомбах, полных трупов стражи.\n";
+                cout << "1. Пожрать трупы\n2. Воздержаться\n";
+                cin >> choice;
+                if (choice == 1) { health += 5; humanity -= 2; } 
+                else { health -= 2; humanity += 1; }
                 break;
 
-            case 2: case 3: case 7: // M
-                cout << "Ты сталкиваешься с агентом CCG." << endl;
-                cout << "1. Сразиться\n2. Попробовать сбежать" << endl;
+            case 2:
+                cout << "Вы подходите к разрушенной деревне.\n1. Напасть на выживших\n2. Предупредить об опасности\n";
+                cin >> choice;
+                if (choice == 1) { health += 4; reputation -= 2; } 
+                else { reputation += 2; humanity += 1; }
+                break;
+
+            case 3:
+                cout << "Вы сталкиваетесь с охотниками на чудовищ.\n1. Сразиться\n2. Спрятаться\n";
+                cin >> choice;
+                if (choice == 1) { health -= 4; reputation += 2; } 
+                else { mana += 2; humanity += 1; }
+                break;
+
+            case 4:
+                cout << "Заброшенная библиотека Инквизиции.\n1. Изучить магию\n2. Сжечь книги\n";
+                cin >> choice;
+                if (choice == 1) { mana += 5; humanity -= 1; } 
+                else { reputation += 1; mana -= 2; }
+                break;
+
+            case 5:
+                cout << "Вы находите логово других гулей.\n1. Присоединиться\n2. Уничтожить их\n";
+                cin >> choice;
+                if (choice == 1) { health += 3; humanity -= 2; } 
+                else { reputation += 2; health -= 5; }
+                break;
+
+            case 6:
+                cout << "Подземный рынок плоти.\n1. Устроить резню\n2. Освободить рабов\n";
+                cin >> choice;
+                if (choice == 1) { health += 6; reputation -= 3; } 
+                else { humanity += 3; mana -= 3; }
+                break;
+
+            case 7:
+                cout << "Мёртвое озеро.\n1. Выпить воду\n2. Обойти\n";
                 cin >> choice;
                 if (choice == 1) {
-                    cout << "Ты убиваешь агента, но получаешь ранение." << endl;
-                    health -= 2;
-                    reputation -= 1;
-                } else if (choice == 2) {
-                    cout << "Ты сбегаешь, но тебя ранят в спину." << endl;
-                    health -= 3;
-                    reputation -= 2;
-                } else {
-                    cout << "Неверный выбор. Ты теряешь концентрацию и получаешь ранение." << endl;
-                    health -= 4;
+                    int effect = rand() % 2;
+                    if (effect == 0) health += 5;
+                    else health -= 5;
                 }
                 break;
 
-            case 4: case 8: case 9: case 12: case 13: // 2xM
-                cout << "Ты попал в засаду двух агентов." << endl;
-                cout << "1. Сразиться\n2. Использовать ману, чтобы активировать 'Режим Буйства'" << endl;
+            case 8:
+                cout << "Руины замка Очищения.\n1. Призвать духа\n2. Игнорировать\n";
                 cin >> choice;
-                if (choice == 1) {
-                    cout << "Ты убиваешь их, но тяжело ранен." << endl;
-                    health -= 4;
-                    reputation -= 2;
-                } else if (choice == 2) {
-                    if (mana >= 5) {
-                        cout << "Ты активировал Режим Буйства, уничтожив их за секунды!" << endl;
-                        mana -= 5;
-                        reputation += 1;
-                    } else {
-                        cout << "Не хватает маны! Ты получаешь тяжёлую травму." << endl;
-                        health -= 6;
-                    }
-                } else {
-                    cout << "Ты замешкался, и один из врагов ранил тебя." << endl;
-                    health -= 5;
-                }
+                if (choice == 1) { mana -= 3; } // может помочь позже
                 break;
 
-            case 5: case 10: // MB
-                cout << "=== Мини-Босс: Следователь Амон ===" << endl;
-                cout << "Тебе противостоит опытный следователь с куинке-клинком." << endl;
-                cout << "1. Атаковать лоб в лоб\n2. Уклониться и нанести контратаку" << endl;
+            case 9:
+                cout << "Лабиринт Вопля.\n1. Следовать за голосами\n2. Закрыть разум\n";
                 cin >> choice;
-                if (choice == 1) {
-                    cout << "Ты был тяжело ранен, но победил." << endl;
-                    health -= 5;
-                    reputation += 2;
-                } else if (choice == 2) {
-                    cout << "Ты умело уворачиваешься и пронзаешь Амона." << endl;
-                    health -= 2;
-                    reputation += 3;
-                } else {
-                    cout << "Неверный выбор. Амон ранил тебя." << endl;
-                    health -= 6;
-                }
+                if (choice == 1) { health -= 3; mana += 2; } 
+                else { mana -= 2; }
                 break;
 
-            case 14: // 3xM
-                cout << "Ты оказался в окружении троих агентов CCG!" << endl;
-                cout << "1. Атаковать всех по очереди\n2. Активировать особую форму Кагуне (10 маны)" << endl;
+            case 10:
+                cout << "Храм Душегубцев.\n1. Принести жертву\n2. Восстать\n";
                 cin >> choice;
-                if (choice == 1) {
-                    cout << "Сражение было кровавым, ты выжил, но едва держишься." << endl;
-                    health -= 6;
-                    reputation += 2;
-                } else if (choice == 2) {
-                    if (mana >= 10) {
-                        cout << "Ты активировал особую форму и уничтожил всех в один миг!" << endl;
-                        mana -= 10;
-                        reputation += 4;
-                    } else {
-                        cout << "Не хватает маны! Ты получил тяжёлое ранение." << endl;
-                        health -= 8;
-                    }
-                } else {
-                    cout << "Неверный выбор. Ты потерял шанс на удар первым." << endl;
-                    health -= 5;
-                }
+                if (choice == 1) { humanity -= 2; mana += 4; } 
+                else { health -= 4; reputation += 2; }
                 break;
 
-            case 17: // HB
-                cout << "=== ГЛАВНЫЙ БОСС: Арима Кишо ===" << endl;
-                cout << "Ты достиг финальной точки. Перед тобой — легендарный Арима." << endl;
-                cout << "1. Сразиться в открытом бою\n2. Попробовать обмануть и нанести скрытный удар" << endl;
+            case 11:
+                cout << "Погоня за ведьмой.\n1. Сделка\n2. Убить\n";
                 cin >> choice;
-                if (choice == 1) {
-                    if (health >= 8 && reputation >= 5) {
-                        cout << "Ты отразил удары Аримы, нашёл брешь и победил. Гули теперь свободны!" << endl;
-                    } else {
-                        cout << "Ты сражался достойно, но Арима был сильнее. Ты пал в бою..." << endl;
-                        health = 0;
-                    }
-                } else if (choice == 2) {
-                    cout << "Ты подкрался, но Арима предугадал атаку и нанёс смертельный удар." << endl;
-                    health = 0;
-                } else {
-                    cout << "Ты не сделал выбор — и Арима тебя уничтожил." << endl;
-                    health = 0;
-                }
+                if (choice == 1) { health += 8; humanity -= 3; } 
+                else { health -= 5; reputation += 3; }
                 break;
 
-            default:
-                cout << "Ошибка этапа. Неверный номер стадии." << endl;
+            case 12:
+                cout << "Расколотый мост.\n1. Спасти паломников\n2. Столкнуть их\n";
+                cin >> choice;
+                if (choice == 1) { reputation += 3; health -= 3; } 
+                else { health += 3; reputation -= 2; }
+                break;
+
+            case 13:
+                cout << "Вы встречаете свою тень.\n1. Поговорить\n2. Уничтожить\n";
+                cin >> choice;
+                if (choice == 1) { humanity += 2; } 
+                else { mana += 3; humanity -= 2; }
+                break;
+
+            case 14:
+                cout << "Арена Кровавого Клана.\n1. Сразиться\n2. Отказаться\n";
+                cin >> choice;
+                if (choice == 1) { health -= 6; reputation += 4; } 
+                else { reputation -= 3; humanity += 2; }
+                break;
+
+            case 15:
+                cout << "Финал: Сердце Чёрной Луны.\n1. Поглотить\n2. Разрушить\n3. Передать человеку\n";
+                cin >> choice;
+                if (choice == 1) {
+                    cout << "Вы стали Королём Гулей. Мир дрожит от страха.\nТёмная концовка.\n";
+                } else if (choice == 2) {
+                    cout << "Вы погибли, разрушив Сердце.\nСветлая концовка.\n";
+                } else {
+                    cout << "Вы дали шанс человечеству.\nНейтральная концовка.\n";
+                }
                 break;
         }
 
         if (health <= 0) {
-            cout << "\nТы пал... Голод, боль и смерть настигли тебя." << endl;
+            cout << "Вы погибли. Элария утратила последнюю надежду.\n";
             break;
         }
 
         stage++;
     }
 
-    if (health > 0 && stage > 17) {
-        cout << "\n=== ПОБЕДА ===" << endl;
-        cout << "Ты прошёл весь путь и стал символом новой эры для гулей." << endl;
-    }
-
-    cout << "\nИтоговое здоровье: " << health << endl;
-    cout << "Мана: " << mana << endl;
-    cout << "Репутация: " << reputation << endl;
-    cout << "Деньги: " << money << endl;
+    cout << "\nСпасибо за игру, " << name << "!\n";
+    return 0;
 }
+
 
 			}
 		}
