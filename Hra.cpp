@@ -904,3 +904,254 @@ int main() {
 	
 
 		
+
+
+
+
+// === МАГ: Стихия Огня ===
+if (class_choice == 3 && class_choice_version == 5) {
+    cout << "Ты — маг огня, изгнанный из Академии Элементов за эксперименты с запретным пламенем." << endl;
+    cout << "Твоя цель — восстановить утраченное имя и разгадать тайну Пепельного Проклятия, сжигающего весь мир." << endl;
+    int stage = 1;
+    int selected_chapter_count[4] = {0,0,0,0}; // for final boss logic
+    while (stage <= 16 && health > 0) {
+        cout << "\n=== Этап " << stage << " ===\n";
+        switch(stage) {
+            case 1: case 6: case 11: case 15: // V
+                cout << "Ты прибыл в деревню магов. Здесь ты восстанавливаешь силы." << endl;
+                health = 10;
+                mana = 10;
+                break;
+            case 2: case 3: case 7: // M
+                cout << "Враг-колдун нападает.\n1. Использовать Огненный Шар\n2. Сбежать" << endl;
+                cin >> choice;
+                if (choice == 1) { health -= 2; mana -= 3; reputation += 1; }
+                else { health -= 3; }
+                break;
+            case 4: case 8: case 9: case 12: case 13: // 2xM
+                cout << "На тебя напали два фанатика Огненного Культа." << endl;
+                cout << "1. Сразиться\n2. Использовать Щит Пламени (5 маны)" << endl;
+                cin >> choice;
+                if (choice == 1) { health -= 4; } 
+                else if (choice == 2 && mana >= 5) { mana -= 5; reputation += 1; }
+                else { health -= 6; }
+                break;
+            case 5: case 10: // MB
+                cout << "=== Мини-Босс: Арканист Огрис ===\n1. Огонь по максимуму\n2. Тактика и защита" << endl;
+                cin >> choice;
+                if (choice == 1) { health -= 5; mana -= 5; }
+                else { health -= 2; mana -= 2; reputation += 2; }
+                break;
+            case 14: // 3xM
+                cout << "Три одержимых элементаля!" << endl;
+                cout << "1. Уничтожить по одному\n2. Взрывной метеор (10 маны)" << endl;
+                cin >> choice;
+                if (choice == 1) { health -= 6; }
+                else if (choice == 2 && mana >= 10) { mana -= 10; reputation += 2; }
+                else { health -= 8; }
+                break;
+            case 16: // HB
+                cout << "=== ГЛАВНЫЙ БОСС: Echoarbiter - Chantai Illia ===" << endl;
+                cout << "Она говорит: 'Выбери главу своего прошлого, за которую ты заплатишь:'" << endl;
+                cout << "1. Битвы\n2. Деревни\n3. Опыт\n4. Деньги" << endl;
+                cin >> choice;
+                int damage = 0;
+                switch(choice) {
+                    case 1:
+                        damage = reputation * 2 + selected_chapter_count[0] * 2;
+                        selected_chapter_count[0]++;
+                        break;
+                    case 2:
+                        damage = 4 + selected_chapter_count[1] * 3;
+                        selected_chapter_count[1]++;
+                        break;
+                    case 3:
+                        damage = 2 + (rand() % 10) + selected_chapter_count[2] * 2;
+                        selected_chapter_count[2]++;
+                        break;
+                    case 4:
+                        damage = money / 10 + selected_chapter_count[3] * 2;
+                        selected_chapter_count[3]++;
+                        break;
+                    default:
+                        damage = 10;
+                }
+                health -= damage;
+                cout << "Ты получил " << damage << " урона от своей памяти!" << endl;
+                break;
+        }
+        if (health <= 0) {
+            cout << "Ты пал от руки Echoarbiter. Мир забыт во тьме." << endl;
+            break;
+        }
+        stage++;
+    }
+    if (health > 0) cout << "Ты победил Echoarbiter! Пламя очищения уничтожило её навеки!" << endl;
+}
+
+if (lang == 2) {
+    if (class_choice == 1 && class_choice_version == 1) {
+        cout << "\nStín minulosti" << endl;
+        cout << "Rok 1324, Francie. Království je rozvráceno vnitřními spory," << endl;
+        cout << "a inkvizice nemilosrdně pronásleduje kacíře. Ve stínu katedrál a hradů se spřádají spiknutí a jen Řád Skrytých stojí na stráži pravé svobody." << endl;
+        cout << "Ty jsi " << name << ", poslední z rodu templářských rytířů, zrazených vlastními. Jako dítě jsi viděl, jak tvého otce popravili na základě falešného obvinění," << endl;
+        cout << "a matku upálili na hranici za 'kacířství'. Zachráněn tajemným starcem - mistrem vrahů - jsi vyrostl v jejich úkrytu, osvojil si umění stínů: skryté vraždy, parkour, jedy a umění maskování." << endl;
+        cout << "Nyní, po letech, jsi neviditelná čepel v srdci tyranie. Tvůj meč není hrubá síla, ale přesný úder ze tmy. Tvé brnění jsou cizí tváře." << endl;
+        cout << "Ale když zjistíš, že vrah tvého otce je velmistr templářů a samotný Řád Skrytých je propleten zradami, budeš muset volit: pomsta nebo povinnost?" << endl;
+
+        cout << "\nPrávě se nacházíš ve vesnici. Můžeš se tu porozhlédnout nebo jít rovnou k mistrovi. Má pro tebe úkol." << endl;
+        cout << "Vyberte, kam chcete jít:" << endl;
+        cout << "1. Hospoda" << endl;
+        cout << "2. Morový doktor" << endl;
+        cout << "3. Kasino" << endl;
+        cout << "4. K mistrovi" << endl;
+
+        int choice;
+        cin >> choice;
+
+        if (choice == 1) {
+            cout << "Přišel jsi do hospody. Zde můžeš pít a povídat si s místními." << endl;
+            cout << "Vypil jsi 2 půllitry piva a pobavil se s místními." << endl;
+            cout << "Dozvěděl jsi se, že ve vesnici řádí vrah, který zabíjí místní obyvatele." << endl;
+            cout << "Rozhodl jsi se, že by to pro tebe mohl být zajímavý úkol." << endl;
+            cout << "Za zabití vraha dostaneš 100 zlaťáků." << endl;
+            cout << "Vezmeš si to?" << endl;
+            cout << "1. Ano" << endl;
+            cout << "2. Ne" << endl;
+
+            int choice2;
+            cin >> choice2;
+            if (choice2 == 1) {
+                cout << "Vzal jsi úkol a šel hledat vraha." << endl;
+                cout << "Našel jsi vraha a zabil ho." << endl;
+                cout << "Dostal jsi 100 zlaťáků." << endl;
+                money += 100;
+            }
+            else {
+                cout << "Rozhodl jsi se nevzít úkol a šel jsi k mistrovi." << endl;
+            }
+        }
+        else if (choice == 4) {
+            cout << "Přišel jsi k mistrovi. Říká ti, že pro tebe má úkol." << endl;
+            cout << "Souhlasil jsi, že úkol přijmeš." << endl;
+            cout << "Po vyslechnutí úkolu od mistra jsi zjistil, že máš zabít jednoho z templářů." << endl;
+            cout << "Zjistil jsi, že templář je v hradu, který hlídají stráže." << endl;
+            cout << "Rozhodl jsi se, že to pro tebe může být zajímavý úkol." << endl;
+            cout << "Vydal jsi se k hradu." << endl;
+
+            cout << "Přišel jsi k hradu. Můžeš vstoupit do hradu nebo ho obejít." << endl;
+            cout << "1. Vstoupit do hradu" << endl;
+            cout << "2. Obejít hrad" << endl;
+
+            int choice3;
+            cin >> choice3;
+
+            if (choice3 == 1) {
+                cout << "Vstoupil jsi do hradu." << endl;
+                cout << "Nevšimně si proklouzl kolem stráží a dostal ses k templářovým komnatám." << endl;
+                cout << "Když jsi vstoupil, uviděl jsi templáře sedícího u stolu. Když ses k němu přiblížil, uviděl jsi na jeho opasku otcovy hodinky." << endl;
+                cout << "To tě šokovalo. Vybavily se ti vzpomínky na otce." << endl;
+                cout << "Zatímco jsi byl rozptýlen, templář ucítil nebezpečí a otočil se. Odskočil jsi od něj a on tasil meč." << endl;
+                cout << "Poznal tě, protože znal tvého otce i tebe, ale neřekl to." << endl;
+                cout << "Zapojil jsi se do boje. V jeho očích bylo vidět, že to nechce dělat." << endl;
+
+                cout << "Vyber první útok:" << endl;
+                cout << "1. Útok skrytou čepelí" << endl;
+                cout << "2. Útok mečem" << endl;
+                cout << "3. Útok pěstí" << endl;
+
+                int choice4;
+                cin >> choice4;
+
+                if (choice4 == 1) {
+                    cout << "Zasáhl jsi templáře skrytou čepelí. Byl překvapen tvou obratností." << endl;
+                    cout << "Před smrtí ti všechno řekl. Jak znal tvého otce, jak ho to mrzelo, atd." << endl;
+                    cout << "Nevěříc jeho slovům jsi se rozhodl zjistit o tom více od svého mistra." << endl;
+                    cout << "Zabil jsi templáře. Úkol splněn." << endl;
+                }
+                else if (choice4 == 2) {
+                    cout << "Zasáhl jsi templáře mečem. Byl překvapen tvou silou a schopností rychle reagovat." << endl;
+                    cout << "Rychlým pohybem meče jsi mu usekl hlavu." << endl;
+                    cout << "Zabil jsi templáře. Úkol splněn." << endl;
+                }
+                else {
+                    cout << "Zasáhl jsi templáře pěstí. Byl překvapen tvou silou." << endl;
+                    cout << "Ale templář nebyl žádný začátečník a ranou meče tě zranil do ruky." << endl;
+                    health -= 1;
+                    cout << "Po útoku jsi mu vytrhl jeho vlastní šavli a přímým úderem do srdce jsi ho zabil." << endl;
+                    cout << "Zabil jsi templáře. Úkol splněn." << endl;
+                }
+            }
+        }
+    }
+    else if (class_choice == 2 && class_choice_version == 3) {
+        cout << "\nJsi ghoul typu Rinkaku. Po probuzení Kagune jsi ztratil vše: jméno, domov, lidskost." << endl;
+        cout << "Nyní musíš přežít v ulicích Tokia zmítaného válkou, kde každý den je boj o existenci." << endl;
+        cout << "Vydáváš se do kavárny 'Anteiku', jediného místa, kde ghoulové dostávají pomoc..." << endl;
+
+        int stage = 1;
+        while (stage <= 15 && health > 0) {
+            cout << "\n=== Fáze " << stage << " ===" << endl;
+            switch (stage) {
+            case 1:
+                cout << "Probouzíš se v katakombách plných mrtvol stráží." << endl;
+                cout << "1. Sežrat mrtvoly\n2. Zdržet se" << endl;
+                cin >> choice;
+                if (choice == 1) {
+                    health += 5;
+                    cout << "Tvá Kagune se posílila, ale ztrácíš trochu lidskosti." << endl;
+                }
+                else {
+                    health -= 2;
+                    cout << "Zůstal jsi hladový, ale zachoval sis lidskost." << endl;
+                }
+                break;
+            case 5:
+                cout << "Nacházíš doupě dalších ghoulů." << endl;
+                cout << "1. Přidat se k nim\n2. Zničit je" << endl;
+                cin >> choice;
+                if (choice == 1) {
+                    health += 3;
+                    cout << "Našel jsi dočasný domov, ale tvá lidskost slábne." << endl;
+                }
+                else {
+                    reputation += 2;
+                    health -= 5;
+                    cout << "Boj byl těžký, ale získal jsi respekt." << endl;
+                }
+                break;
+            case 15:
+                cout << "Finále: Srdce Černého Měsíce." << endl;
+                cout << "1. Pohltit\n2. Zničit\n3. Předat člověku" << endl;
+                cin >> choice;
+                if (choice == 1) {
+                    cout << "Stal ses Králem Ghoulů. Svět se třese strachy." << endl;
+                    cout << "Temný konec." << endl;
+                }
+                else if (choice == 2) {
+                    cout << "Zahynul jsi, ale zničil jsi Srdce." << endl;
+                    cout << "Světlý konec." << endl;
+                }
+                else {
+                    cout << "Dal jsi lidstvu šanci." << endl;
+                    cout << "Neutrální konec." << endl;
+                }
+                break;
+            }
+            stage++;
+        }
+    }
+    // Další příběhy by následovaly stejnou strukturou...
+}
+else if (lang == 2) {
+    // Anglická verze by zůstala původní
+}
+else {
+    cout << "Neplatná volba jazyka" << endl;
+    return 1;
+}
+
+return 0;
+}
+
+}
